@@ -1,0 +1,28 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#7ab8e4",
+    "activityBar.activeBorder": "#d42b8e",
+    "activityBar.background": "#7ab8e4",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#d42b8e",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#4fa1dc",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#2989cf",
+    "titleBar.activeBackground": "#4fa1dc",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#4fa1dc99",
+    "titleBar.inactiveForeground": "#15202b99"
+  },
+  "peacock.color": "#4fa1dc",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "duvnab",
+      "database": "/Users/jonnyparris/Documents/Actual/Duvland---Lisbon-Office-630d3d0/db.sqlite"
+    }
+  ],
+  "sqltools.useNodeRuntime": true
+}

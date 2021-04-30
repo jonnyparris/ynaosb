@@ -1,0 +1,45 @@
+{
+  "name": "duvnab",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .ts,.js,.vue .",
+    "lint:fix": "npm run lint -- fix",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@prisma/client": "^2.22.0-dev.47",
+    "bootstrap": "^4.6.0",
+    "bootstrap-vue": "^2.21.2",
+    "core-js": "^3.11.1",
+    "express": "^4.17.1",
+    "nuxt": "^2.15.4"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.15.4",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/composition-api": "^0.23.4",
+    "@nuxtjs/eslint-config-typescript": "^6.0.0",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "@vue/test-utils": "^1.1.4",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-vue": "^7.9.0",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
+    "prisma": "^2.22.0-dev.46",
+    "pug": "^3.0.2",
+    "pug-plain-loader": "^1.1.0",
+    "ts-jest": "^26.5.5",
+    "vue-jest": "^3.0.7"
+  }
+}
