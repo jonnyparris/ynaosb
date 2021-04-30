@@ -5,12 +5,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, useContext } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
+    const { app } = useContext()
+
     const yo = ref<unknown>('yo')
 
+    onMounted(async () => {
+      try {
+        yo.value = await app.$axios.$get('accounts')
+      } catch (e) {
+        console.error('data fetch booboo', e)
+      }
+    })
     return {
       yo,
     }
