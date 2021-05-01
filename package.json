@@ -9,11 +9,12 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .ts,.js,.vue .",
     "lint:fix": "npm run lint -- fix",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
     "@prisma/client": "^2.22.0-dev.47",
+    "@types/express": "^4.17.11",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.11.1",
