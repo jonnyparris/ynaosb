@@ -1,27 +1,29 @@
 <template lang="pug">
 .container
-  h1 duvnab
-  p {{ yo }}
+  div
+    h1 duvnab
+    BListGroup
+      BListGroupItem(v-for='(account, index) in accounts', :key='index') {{ account }}
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext, useFetch } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
     const { app } = useContext()
 
-    const yo = ref<unknown>('yo')
+    const accounts = ref<unknown>()
 
-    onMounted(async () => {
+    useFetch(async () => {
       try {
-        yo.value = await app.$axios.$get('accounts')
+        accounts.value = await app.$axios.$get('accounts')
       } catch (e) {
         console.error('data fetch booboo', e)
       }
     })
     return {
-      yo,
+      accounts,
     }
   },
 })

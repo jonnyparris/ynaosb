@@ -47,6 +47,11 @@ const config: NuxtConfig = {
   serverMiddleware: ['~/api/index.ts'],
 
   axios: { prefix: '/api/' },
+  bootstrapVue: {
+    // Use this when we want to customise boostrap styling
+    // bootstrapCSS: false, // Or `css: false`
+    // bootstrapVueCSS: false, // Or `bvCSS: false`
+  },
 }
 
 export default config
