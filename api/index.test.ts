@@ -11,6 +11,6 @@ describe('Accounts', () => {
     const app = setupApp(testDbClient)
     const response = await request(app).get('/accounts')
     expect(response.status).toBe(200)
-    expect(response.body.length).toBe(26)
+    expect(response.body.length).toBe(13)
   })
 })
