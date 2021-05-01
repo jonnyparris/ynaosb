@@ -1,17 +1,18 @@
 import express from 'express'
 import { PrismaClient } from '@prisma/client'
+import accounts from './routes/accounts'
+import { PrismaClient as Client } from '.prisma/client'
+
+export const setupApp = (dbClient: Client) => {
+  const app = express()
+  app.use(express.json())
+  app.use(accounts(dbClient))
+  return app
+}
 
 const prisma = new PrismaClient()
-const app = express()
-
-app.use(express.json())
-
-app.get('/accounts', async (_req, res) => {
-  const accounts = await prisma.accounts.findMany()
-  res.json(accounts)
-})
 
 export default {
   path: '/api',
-  handler: app,
+  handler: setupApp(prisma),
 }
