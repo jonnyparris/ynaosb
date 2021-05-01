@@ -3,7 +3,9 @@
   div
     h1 duvnab
     BListGroup
-      BListGroupItem(v-for='(account, index) in accounts', :key='index') {{ account }}
+      BListGroupItem.d-flex.justify-items-start(v-for='(balance, name) in accounts', :key='name')
+        span.flex-grow-1.mr-4 {{ name }}
+        span {{ balance / 100 }}
 </template>
 
 <script lang="ts">
@@ -13,13 +15,13 @@ export default defineComponent({
   setup() {
     const { app } = useContext()
 
-    const accounts = ref<unknown>()
+    const accounts = ref<any>()
 
     useFetch(async () => {
       try {
-        accounts.value = await app.$axios.$get('accounts')
+        accounts.value = await app.$axios.$get('accountBalances')
       } catch (e) {
-        console.error('data fetch booboo', e)
+        alert('data fetch booboo' + e)
       }
     })
     return {
@@ -36,6 +38,5 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
 }
 </style>

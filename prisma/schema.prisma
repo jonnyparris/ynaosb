@@ -25,7 +25,7 @@ model migrations__ {
 model accounts {
   id                   String                 @id @default(uuid())
   account_id           String?
-  name                 String?
+  name                 String
   balance_current      Int?
   balance_available    Int?
   balance_limit        Int?
