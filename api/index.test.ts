@@ -12,6 +12,10 @@ beforeAll(() => {
   app = setupApp(testDbClient)
 })
 
+afterAll(() => {
+  testDbClient.$disconnect()
+})
+
 describe('/accounts', () => {
   it('returns list of accounts', async (done) => {
     const response = await request(app).get('/accounts')
@@ -35,6 +39,24 @@ describe('/categories', () => {
     const response = await request(app).get('/categories')
     expect(response.status).toBe(200)
     expect(response.body.length).toBe(68)
+    done()
+  })
+})
+
+describe('/catGroups', () => {
+  it('returns list of catGroups', async (done) => {
+    const response = await request(app).get('/catGroups')
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBe(10)
+    done()
+  })
+})
+
+describe('/catGroupBalances', () => {
+  it('returns list of accounts and their balance', async (done) => {
+    const response = await request(app).get('/catGroupBalances')
+    expect(response.status).toBe(200)
+    expect(response.body.Unavoidable).toBe(-2279575)
     done()
   })
 })

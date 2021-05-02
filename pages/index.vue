@@ -34,7 +34,7 @@ export default defineComponent({
     useFetch(async () => {
       try {
         accounts.value = await app.$axios.$get('accountBalances')
-        categories.value = await app.$axios.$get('categoryBalances')
+        categories.value = await app.$axios.$get('catGroupBalances')
       } catch (e) {
         alert('data fetch booboo' + e)
       }
