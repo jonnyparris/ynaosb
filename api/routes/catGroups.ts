@@ -19,6 +19,21 @@ const catGroups = (db: PrismaClient) => {
     return balance.sum.amount
   }
 
+  const getCatGroupBudgetBalance = async (id: string, month?: number, year?: number) => {
+    const _month = month?.toString() || (new Date().getMonth() + 1).toString().padStart(2, 0)
+    const _year = year?.toString() || new Date().getFullYear().toString().padStart(2, 0)
+    const budgetId = `budget${_year}${_month}!group-leftover`
+    const balance = await db.spreadsheet_cells.aggregate({
+      sum: {
+        cachedValue: true,
+      },
+      where: {
+        name: { startsWith: budgetId, endsWith: id },
+      },
+    })
+    return balance.sum.cachedValue
+  }
+
   router.get('/catGroups', async (_req, res) => {
     const groups = await db.category_groups.findMany({ where: { tombstone: 0 } })
     res.json(groups.map((group) => group.name))
@@ -41,6 +56,20 @@ const catGroups = (db: PrismaClient) => {
         }, Promise.resolve(0))
         withTotals[group.name as string] = groupBalance
         return null
+      }),
+    )
+    res.json(withTotals)
+  })
+
+  router.get('/catGroupBudgets', async (_req, res) => {
+    const groups = await db.category_groups.findMany({
+      where: { tombstone: 0 },
+    })
+    const withTotals: { [k: string]: unknown } = {}
+    await Promise.all(
+      groups.map(async (group) => {
+        const balance = (await getCatGroupBudgetBalance(group.id)) || 0
+        withTotals[group.name as string] = balance
       }),
     )
     res.json(withTotals)

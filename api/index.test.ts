@@ -60,3 +60,12 @@ describe('/catGroupBalances', () => {
     done()
   })
 })
+
+describe('/catGroupBudgets', () => {
+  it('returns list of accounts and their balance', async (done) => {
+    const response = await request(app).get('/catGroupBudgets')
+    expect(response.status).toBe(200)
+    expect(response.body.Unavoidable).toBe(88467)
+    done()
+  })
+})

@@ -129,7 +129,7 @@ model rules {
 model spreadsheet_cells {
   name        String  @id @default(uuid())
   expr        String?
-  cachedValue String?
+  cachedValue Int?
 }
 
 model transactions {
