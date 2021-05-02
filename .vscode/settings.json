@@ -24,5 +24,6 @@
       "database": "/Users/jonnyparris/Documents/Actual/Duvland---Lisbon-Office-630d3d0/db.sqlite"
     }
   ],
-  "sqltools.useNodeRuntime": true
+  "sqltools.useNodeRuntime": true,
+  "jest.pathToJest": "npm test -- --passWithNoTests"
 }
