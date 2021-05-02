@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model meta__ {
   key   String  @id @default(uuid())
   value String?
@@ -21,7 +20,6 @@ model migrations__ {
   @@map("__migrations__")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model accounts {
   id                   String                 @id @default(uuid())
   account_id           String?
@@ -39,10 +37,8 @@ model accounts {
   tombstone            Int?                   @default(0)
   sort_order           Float?
   pending_transactions pending_transactions[]
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model banks {
   id        String  @id @default(uuid())
   bank_id   String?
@@ -50,7 +46,6 @@ model banks {
   tombstone Int?    @default(0)
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model categories {
   id         String  @id @default(uuid())
   name       String?
@@ -58,33 +53,23 @@ model categories {
   cat_group  String?
   sort_order Float?
   tombstone  Int?    @default(0)
-
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model category_groups {
   id         String  @id @default(uuid())
   name       String?
   is_income  Int?    @default(0)
   sort_order Float?
   tombstone  Int?    @default(0)
-
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model category_mapping {
   id         String  @id @default(uuid())
   transferId String?
-
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model created_budgets {
   month String @id @default(uuid())
-
 }
 
 model messages_clock {
@@ -103,37 +88,27 @@ model messages_crdt {
   @@index([dataset, row, column, timestamp], name: "messages_crdt_search")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model payee_mapping {
   id       String  @id @default(uuid())
   targetId String?
-
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model payee_rules {
   id        String  @id @default(uuid())
   payee_id  String?
   type      String?
   value     String?
   tombstone Int?    @default(0)
-
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model payees {
   id            String  @id @default(uuid())
   name          String?
   category      String?
   tombstone     Int?    @default(0)
   transfer_acct String?
-
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model pending_transactions {
   id          String    @id @default(uuid())
   acct        String?
@@ -141,30 +116,22 @@ model pending_transactions {
   description String?
   date        String?
   accounts    accounts? @relation(fields: [acct], references: [id])
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model rules {
   id         String  @id @default(uuid())
   stage      String?
   conditions String?
   actions    String?
   tombstone  Int?    @default(0)
-
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model spreadsheet_cells {
   name        String  @id @default(uuid())
   expr        String?
   cachedValue String?
-
-
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model transactions {
   id                    String  @id @default(uuid())
   isParent              Int?    @default(0)
