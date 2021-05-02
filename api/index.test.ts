@@ -29,3 +29,12 @@ describe('/accountBalances', () => {
     done()
   })
 })
+
+describe('/categories', () => {
+  it('returns list of categories', async (done) => {
+    const response = await request(app).get('/categories')
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBe(68)
+    done()
+  })
+})
