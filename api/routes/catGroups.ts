@@ -20,8 +20,8 @@ const catGroups = (db: PrismaClient) => {
   }
 
   const getCatGroupBudgetBalance = async (id: string, month?: number, year?: number) => {
-    const _month = month?.toString() || (new Date().getMonth() + 1).toString().padStart(2, 0)
-    const _year = year?.toString() || new Date().getFullYear().toString().padStart(2, 0)
+    const _month = month?.toString() || (new Date().getMonth() + 1).toString().padStart(2, '0')
+    const _year = year?.toString() || new Date().getFullYear()
     const budgetId = `budget${_year}${_month}!group-leftover`
     const balance = await db.spreadsheet_cells.aggregate({
       sum: {
