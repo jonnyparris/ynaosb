@@ -9,11 +9,11 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .ts,.js,.vue .",
     "lint:fix": "npm run lint -- fix",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand --no-coverage"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
-    "@prisma/client": "^2.22.0-dev.47",
+    "@prisma/client": "^2.22.0-dev.48",
     "@types/express": "^4.17.11",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
@@ -40,7 +40,7 @@
     "eslint-plugin-vue": "^7.9.0",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
-    "prisma": "^2.22.0-dev.46",
+    "prisma": "^2.22.0-dev.48",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
     "supertest": "^6.1.3",
