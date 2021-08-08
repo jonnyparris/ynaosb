@@ -25,5 +25,6 @@
     }
   ],
   "sqltools.useNodeRuntime": true,
-  "jest.pathToJest": "npm test -- --passWithNoTests"
+  "jest.pathToJest": "",
+  "jest.jestCommandLine": "npm test -- --passWithNoTests ."
 }
