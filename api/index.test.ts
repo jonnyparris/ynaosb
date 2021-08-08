@@ -17,58 +17,52 @@ afterAll(() => {
 })
 
 describe('/accounts', () => {
-  it('returns list of accounts', async (done) => {
+  it('returns list of accounts', async () => {
     const response = await request(app).get('/accounts')
     expect(response.status).toBe(200)
     expect(response.body.length).toBe(13)
-    done()
   })
 })
 
 describe('/accountBalances', () => {
-  it('returns list of accounts and their balance', async (done) => {
+  it('returns list of accounts and their balance', async () => {
     const response = await request(app).get('/accountBalances')
     expect(response.status).toBe(200)
     expect(response.body.Revolut).toBe(172494)
-    done()
   })
 })
 
 describe('/categories', () => {
-  it('returns list of categories', async (done) => {
+  it('returns list of categories', async () => {
     const response = await request(app).get('/categories')
     expect(response.status).toBe(200)
     expect(response.body.length).toBe(68)
-    done()
   })
 })
 
 describe('/catGroups', () => {
-  it('returns list of catGroups', async (done) => {
+  it('returns list of catGroups', async () => {
     const response = await request(app).get('/catGroups')
     expect(response.status).toBe(200)
     expect(response.body.length).toBe(10)
-    done()
   })
 })
 
 describe('/catGroupBalances', () => {
-  it('returns list of accounts and their balance', async (done) => {
+  it('returns list of accounts and their balance', async () => {
     const response = await request(app).get('/catGroupBalances')
     expect(response.status).toBe(200)
     expect(response.body.Unavoidable).toBe(-2279575)
-    done()
   })
 })
 
 describe('/catGroupBudgets', () => {
-  it('returns list of accounts and their balance', async (done) => {
+  it('returns list of accounts and their balance', async () => {
     const response = await request(app).get('/catGroupBudgets')
     expect(response.status).toBe(200)
     expect(response.body.Unavoidable).toBe(88467)
     expect(response.body.Work).toBe(424361)
     expect(response.body.Play).toBe(25910)
     expect(response.body.YAGNI).toBe(1551213)
-    done()
   })
 })

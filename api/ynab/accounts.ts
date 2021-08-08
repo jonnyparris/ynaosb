@@ -1,6 +1,13 @@
 import { findBudgets, getYNAB4Data } from './utils'
 import { Account, YNAB } from './ynab4'
 
+interface Summary {
+  [k: string]: string
+}
+interface RawSummary {
+  [k: string]: number
+}
+
 const getBudget = (target = 'Duvland - Lisbon Office'): YNAB => {
   const path = findBudgets().find(({ name }) => name === target)?.filepath
   return path && getYNAB4Data(path)
@@ -12,19 +19,17 @@ export const getAccounts = (): Account[] => {
   )
 }
 
-interface Summary {
-  [k: string]: string
-}
-interface RawSummary {
-  [k: string]: number
+const getAccountMap = () => {
+  const accounts = getAccounts()
+  const map = {} as Summary
+  for (const acc of accounts) {
+    map[acc.entityId] = acc.accountName
+  }
+  return map
 }
 
 export const accountTotals = () => {
-  const accounts = getAccounts()
-  const accountMap = {} as Summary
-  for (const acc of accounts) {
-    accountMap[acc.entityId] = acc.accountName
-  }
+  const accountMap = getAccountMap()
   const accountIds = Object.keys(accountMap)
   const totals: RawSummary = {}
   for (const trans of getBudget().transactions) {
