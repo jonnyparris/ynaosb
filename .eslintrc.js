@@ -26,9 +26,7 @@ module.exports = {
         printWidth: 100,
       },
     ],
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      { ignoreRestSiblings: true },
-    ],
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+    'vue/script-setup-uses-vars': 0,
   },
 }
