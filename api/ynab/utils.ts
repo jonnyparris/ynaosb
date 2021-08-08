@@ -1,7 +1,13 @@
 const fs = require('fs')
 const os = require('os')
 const { join } = require('path')
+const d = require('date-fns')
 const normalizePathSep = require('slash')
+
+export const morethan2WeeksAgo = (date: string) => {
+  const fortnightAgo = d.subDays(new Date(), 14)
+  return d.isBefore(d.parse(date, 'yyyy-MM-dd', new Date()), fortnightAgo)
+}
 
 const getBudgetName = (filepath: string) => {
   const unixFilepath = normalizePathSep(filepath)

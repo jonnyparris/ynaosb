@@ -14,6 +14,8 @@ export interface Account {
 }
 
 export interface Transaction {
+  targetAccountId?: string
+  transferTransactionId?: string
   isTombstone?: boolean
   accountId: string
   importedPayee: string

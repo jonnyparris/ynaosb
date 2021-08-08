@@ -1,4 +1,4 @@
-import { findBudgets, getYNAB4Data } from './utils'
+import { findBudgets, getYNAB4Data, morethan2WeeksAgo } from './utils'
 import { Account, YNAB } from './ynab4'
 
 interface Summary {
@@ -46,4 +46,24 @@ export const accountTotals = () => {
     summary[accountMap[key]] = Number(totals[key]).toFixed(2)
   }
   return summary
+}
+
+export const getROI = (name: string) => {
+  const accountId = getBudget().accounts.find((acc) => acc.accountName === name)?.entityId
+  const totals = {
+    investments: 0,
+    gains: 0,
+  }
+  for (const trans of getBudget().transactions) {
+    if (!trans.isTombstone && accountId === trans.accountId) {
+      if (trans.transferTransactionId) {
+        if (morethan2WeeksAgo(trans.date)) {
+          totals.investments += trans.amount
+        }
+      } else {
+        totals.gains += trans.amount
+      }
+    }
+  }
+  return ((totals.gains / totals.investments) * 100).toFixed(1) + '%'
 }
