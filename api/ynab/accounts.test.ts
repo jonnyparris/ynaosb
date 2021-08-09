@@ -1,5 +1,5 @@
 import { smoke } from './fixtures/smoke'
-import { getAccounts, accountTotals, getROI } from './accounts'
+import { getAccounts, accountTotals, getROI, getIRR } from './accounts'
 
 describe('Accounts', () => {
   it('returns list of on budget accounts', () => {
@@ -20,5 +20,10 @@ describe('Accounts', () => {
   it('gets the ROI for an investment account', () => {
     expect(getROI('Degiro')).toEqual('5.3%')
     expect(getROI('Binance')).toEqual('2.6%')
+  })
+
+  it('gets the IRR for an investment account', () => {
+    expect(getIRR('Degiro')).toEqual('33.6%')
+    expect(getIRR('Binance')).toEqual('13.9%')
   })
 })

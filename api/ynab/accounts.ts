@@ -1,6 +1,6 @@
+import { xirr, convertRate } from 'node-irr'
 import { findBudgets, getYNAB4Data, morethan2WeeksAgo } from './utils'
 import { Account, YNAB } from './ynab4'
-
 interface Summary {
   [k: string]: string
 }
@@ -66,4 +66,23 @@ export const getROI = (name: string) => {
     }
   }
   return ((totals.gains / totals.investments) * 100).toFixed(1) + '%'
+}
+
+export const getIRR = (name: string) => {
+  const accountId = getBudget().accounts.find((acc) => acc.accountName === name)?.entityId
+  const cashFlows = [] as any[]
+  let total = 0
+  for (const trans of getBudget().transactions) {
+    if (!trans.isTombstone && accountId === trans.accountId) {
+      if (trans.transferTransactionId && morethan2WeeksAgo(trans.date)) {
+        cashFlows.push({ amount: -trans.amount, date: trans.date })
+      }
+      if (!(trans.transferTransactionId && !morethan2WeeksAgo(trans.date))) {
+        total += trans.amount
+      }
+    }
+  }
+  cashFlows.push({ amount: total, date: '2021-08-09' })
+  const dayRate = xirr(cashFlows).rate
+  return (convertRate(dayRate, 365) * 100).toFixed(1) + '%'
 }
