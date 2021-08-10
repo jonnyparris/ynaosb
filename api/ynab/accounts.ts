@@ -77,6 +77,7 @@ export const getIRR = (name: string) => {
       if (trans.transferTransactionId && morethan2WeeksAgo(trans.date)) {
         cashFlows.push({ amount: -trans.amount, date: trans.date })
       }
+      // If NOT a recent deposit (i.e. a market gain)
       if (!(trans.transferTransactionId && !morethan2WeeksAgo(trans.date))) {
         total += trans.amount
       }
