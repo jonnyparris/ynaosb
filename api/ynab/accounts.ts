@@ -9,6 +9,16 @@ interface RawSummary {
   [k: string]: number
 }
 
+const addCommas = (n: number) => {
+  const rx = /(\d+)(\d{3})/
+  return String(n).replace(/^\d+/, function (w) {
+    while (rx.test(w)) {
+      w = w.replace(rx, '$1,$2')
+    }
+    return w
+  })
+}
+
 const getBudget = (target = 'Duvland - Lisbon Office'): YNAB => {
   const path = findBudgets().find(({ name }) => name === target)?.filepath
   return path && getYNAB4Data(path)
@@ -46,7 +56,7 @@ export const accountTotals = (offBudgetOnly = false) => {
   const summary = {} as Summary
   for (const key in totals) {
     if (totals[key]) {
-      summary[accountMap[key]] = Number(totals[key]).toFixed(2)
+      summary[accountMap[key]] = addCommas(Math.ceil(totals[key]))
     }
   }
   return summary
@@ -116,7 +126,7 @@ export const getInvestmentsSummary = (): InvestmentSummary[] => {
         balance: accountTotals(true)[investment.accountName],
         ROI: getROI(investment.accountName),
         IRR: getIRR(investment.accountName),
-        totalInput: getInvestmentTotals(investment.accountName, true).investments.toFixed(2),
+        totalInput: addCommas(getInvestmentTotals(investment.accountName, true).investments),
       })
   }
   return summary
