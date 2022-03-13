@@ -23,7 +23,7 @@ export default defineComponent({
           class: k === 'name' ? '' : 'text-right',
         }))
       } catch (e) {
-        alert('data fetch booboo' + e)
+        console.error('data fetch booboo' + e)
       }
     })
     return {
