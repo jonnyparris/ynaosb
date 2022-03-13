@@ -3,7 +3,7 @@ import { getAccounts, accountTotals, getROI, getIRR } from './accounts'
 
 describe('Accounts', () => {
   it('returns list of on budget accounts', () => {
-    expect(getAccounts().length).toBe(13)
+    expect(getAccounts().length).toBe(1)
   })
 
   it('returns accurate totals', () => {
@@ -18,12 +18,10 @@ describe('Accounts', () => {
   })
 
   it('gets the ROI for an investment account', () => {
-    expect(getROI('Degiro')).toEqual('5.3%')
-    expect(getROI('Binance')).toEqual('2.6%')
+    expect(getROI('Cheese')).toEqual('2.2%')
   })
 
   it('gets the IRR for an investment account', () => {
-    expect(getIRR('Degiro')).toEqual('33.6%')
-    expect(getIRR('Binance')).toEqual('13.9%')
+    expect(getIRR('Cheese')).toEqual('3.4%')
   })
 })

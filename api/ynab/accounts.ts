@@ -1,6 +1,7 @@
 import { subDays } from 'date-fns'
 import { Router } from 'express'
 import { xirr, convertRate } from 'node-irr'
+import { mockYNAB } from './fixtures/smoke'
 import { findBudgets, getYNAB4Data, morethan2WeeksAgo } from './utils'
 import { Account, YNAB } from './ynab4'
 interface Summary {
@@ -22,7 +23,7 @@ const addCommas = (n: number) => {
 
 const getBudget = (target = 'Duvland - Lisbon Office'): YNAB => {
   const path = findBudgets().find(({ name }) => name === target)?.filepath
-  return path && getYNAB4Data(path)
+  return process.env.NODE_ENV === 'test' ? mockYNAB : path && getYNAB4Data(path)
 }
 
 export const getAccounts = (offBudgetOnly = false): Account[] => {
