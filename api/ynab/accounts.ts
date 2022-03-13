@@ -1,3 +1,4 @@
+import { Router } from 'express'
 import { xirr, convertRate } from 'node-irr'
 import { findBudgets, getYNAB4Data, morethan2WeeksAgo } from './utils'
 import { Account, YNAB } from './ynab4'
@@ -13,14 +14,15 @@ const getBudget = (target = 'Duvland - Lisbon Office'): YNAB => {
   return path && getYNAB4Data(path)
 }
 
-export const getAccounts = (): Account[] => {
+export const getAccounts = (offBudgetOnly = false): Account[] => {
   return getBudget().accounts.filter(
-    ({ isTombstone, onBudget, hidden }: Account) => !isTombstone && !hidden && onBudget,
+    ({ isTombstone, onBudget, hidden }: Account) =>
+      !isTombstone && !hidden && onBudget === !offBudgetOnly,
   )
 }
 
-const getAccountMap = () => {
-  const accounts = getAccounts()
+const getAccountMap = (offBudgetOnly = false) => {
+  const accounts = getAccounts(offBudgetOnly)
   const map = {} as Summary
   for (const acc of accounts) {
     map[acc.entityId] = acc.accountName
@@ -28,8 +30,8 @@ const getAccountMap = () => {
   return map
 }
 
-export const accountTotals = () => {
-  const accountMap = getAccountMap()
+export const accountTotals = (offBudgetOnly = false) => {
+  const accountMap = getAccountMap(offBudgetOnly)
   const accountIds = Object.keys(accountMap)
   const totals: RawSummary = {}
   for (const trans of getBudget().transactions) {
@@ -43,12 +45,14 @@ export const accountTotals = () => {
   }
   const summary = {} as Summary
   for (const key in totals) {
-    summary[accountMap[key]] = Number(totals[key]).toFixed(2)
+    if (totals[key]) {
+      summary[accountMap[key]] = Number(totals[key]).toFixed(2)
+    }
   }
   return summary
 }
 
-export const getROI = (name: string) => {
+export const getInvestmentTotals = (name: string, allTotals = false) => {
   const accountId = getBudget().accounts.find((acc) => acc.accountName === name)?.entityId
   const totals = {
     investments: 0,
@@ -57,7 +61,7 @@ export const getROI = (name: string) => {
   for (const trans of getBudget().transactions) {
     if (!trans.isTombstone && accountId === trans.accountId) {
       if (trans.transferTransactionId) {
-        if (morethan2WeeksAgo(trans.date)) {
+        if (morethan2WeeksAgo(trans.date) || allTotals) {
           totals.investments += trans.amount
         }
       } else {
@@ -65,7 +69,12 @@ export const getROI = (name: string) => {
       }
     }
   }
-  return ((totals.gains / totals.investments) * 100).toFixed(1) + '%'
+  return totals
+}
+
+export const getROI = (name: string) => {
+  const { investments, gains } = getInvestmentTotals(name)
+  return ((gains / investments) * 100).toFixed(1) + '%'
 }
 
 export const getIRR = (name: string) => {
@@ -87,3 +96,46 @@ export const getIRR = (name: string) => {
   const dayRate = xirr(cashFlows).rate
   return (convertRate(dayRate, 365) * 100).toFixed(1) + '%'
 }
+
+interface InvestmentSummary {
+  name: string
+  balance: string
+  IRR: string
+  ROI: string
+  totalInput: string
+  fees?: number
+}
+
+export const getInvestmentsSummary = (): InvestmentSummary[] => {
+  const investments = getAccounts(true)
+  const summary: InvestmentSummary[] = []
+  for (const investment of investments) {
+    getInvestmentTotals(investment.accountName, true).investments &&
+      summary.push({
+        name: investment.accountName,
+        balance: accountTotals(true)[investment.accountName],
+        ROI: getROI(investment.accountName),
+        IRR: getIRR(investment.accountName),
+        totalInput: getInvestmentTotals(investment.accountName, true).investments.toFixed(2),
+      })
+  }
+  return summary
+}
+
+const accounts = () => {
+  const router = Router()
+  router.get('/accounts', (_req, res) => {
+    res.json(getAccounts().map((acct) => acct.accountName))
+  })
+
+  router.get('/accountBalances', (req, res) => {
+    res.json(accountTotals(req.query.offBudget === 'true'))
+  })
+
+  router.get('/investment-accounts', (req, res) => {
+    res.json(getInvestmentsSummary())
+  })
+  return router
+}
+
+export default accounts

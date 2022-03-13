@@ -1,24 +1,8 @@
 <template lang="pug">
 .container
   div
-    h1 duvnab
-    BRow
-      BCol
-        BListGroup
-          BListGroupItem.d-flex.justify-items-start(
-            v-for='(balance, name) in accounts',
-            :key='name'
-          )
-            span.flex-grow-1.mr-4 {{ name }}
-            span {{ balance / 100 }}
-      BCol
-        BListGroup
-          BListGroupItem.d-flex.justify-items-start(
-            v-for='(balance, name) in categories',
-            :key='name'
-          )
-            span.flex-grow-1.mr-4 {{ name }}
-            span {{ balance / 100 }}
+    h1 Duvnab
+    BTable(:items='iAccounts', striped)
 </template>
 
 <script lang="ts">
@@ -27,21 +11,17 @@ import { defineComponent, ref, useContext, useFetch } from '@nuxtjs/composition-
 export default defineComponent({
   setup() {
     const { app } = useContext()
-
-    const accounts = ref<any>()
-    const categories = ref<any>()
+    const iAccounts = ref<any>()
 
     useFetch(async () => {
       try {
-        accounts.value = await app.$axios.$get('accountBalances')
-        categories.value = await app.$axios.$get('catGroupBudgets')
+        iAccounts.value = await app.$axios.$get('investment-accounts')
       } catch (e) {
         alert('data fetch booboo' + e)
       }
     })
     return {
-      accounts,
-      categories,
+      iAccounts,
     }
   },
 })
