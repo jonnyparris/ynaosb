@@ -9,7 +9,7 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .ts,.js,.vue .",
     "lint:fix": "npm run lint -- fix",
-    "test": "jest --runInBand --no-coverage"
+    "test": "NODE_ENV=test jest --runInBand --no-coverage"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
