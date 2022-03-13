@@ -1,3 +1,4 @@
+import { subDays } from 'date-fns'
 import { Router } from 'express'
 import { xirr, convertRate } from 'node-irr'
 import { findBudgets, getYNAB4Data, morethan2WeeksAgo } from './utils'
@@ -102,7 +103,8 @@ export const getIRR = (name: string) => {
       }
     }
   }
-  cashFlows.push({ amount: total, date: '2021-08-09' })
+  const fortnightAgo = subDays(new Date(), 14)
+  cashFlows.push({ amount: total, date: fortnightAgo })
   const dayRate = xirr(cashFlows).rate
   return (convertRate(dayRate, 365) * 100).toFixed(1) + '%'
 }
@@ -112,6 +114,7 @@ interface InvestmentSummary {
   balance: string
   IRR: string
   ROI: string
+  totalInputExcl: string
   totalInput: string
   fees?: number
 }
@@ -126,6 +129,7 @@ export const getInvestmentsSummary = (): InvestmentSummary[] => {
         balance: accountTotals(true)[investment.accountName],
         ROI: getROI(investment.accountName),
         IRR: getIRR(investment.accountName),
+        totalInputExcl: addCommas(getInvestmentTotals(investment.accountName).investments),
         totalInput: addCommas(getInvestmentTotals(investment.accountName, true).investments),
       })
   }
