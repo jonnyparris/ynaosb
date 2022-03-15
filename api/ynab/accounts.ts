@@ -72,12 +72,12 @@ export const getInvestmentTotals = (name: string, allTotals = false) => {
   }
   for (const trans of getBudget().transactions) {
     if (!trans.isTombstone && accountId === trans.accountId) {
-      if (trans.transferTransactionId) {
-        if (morethan2WeeksAgo(trans.date) || allTotals) {
+      if (morethan2WeeksAgo(trans.date) || allTotals) {
+        if (trans.transferTransactionId) {
           totals.investments += trans.amount
+        } else {
+          totals.gains += trans.amount
         }
-      } else {
-        totals.gains += trans.amount
       }
     }
   }
@@ -112,6 +112,7 @@ export const getIRR = (name: string) => {
 
 interface InvestmentSummary {
   name: string
+  balanceExcl: string
   balance: string
   IRR: string
   ROI: string
@@ -124,15 +125,21 @@ export const getInvestmentsSummary = (): InvestmentSummary[] => {
   const investments = getAccounts(true)
   const summary: InvestmentSummary[] = []
   for (const investment of investments) {
-    getInvestmentTotals(investment.accountName, true).investments &&
+    if (getInvestmentTotals(investment.accountName, true).investments) {
+      const { investments: investmentsExcl, gains: gainsExcl } = getInvestmentTotals(
+        investment.accountName,
+      )
+      const { investments, gains } = getInvestmentTotals(investment.accountName, true)
       summary.push({
         name: investment.accountName,
-        balance: accountTotals(true)[investment.accountName],
+        balanceExcl: addCommas(Math.ceil(investmentsExcl) + Math.ceil(gainsExcl)),
+        balance: addCommas(Math.ceil(investments) + Math.ceil(gains)),
         ROI: getROI(investment.accountName),
         IRR: getIRR(investment.accountName),
-        totalInputExcl: addCommas(getInvestmentTotals(investment.accountName).investments),
+        totalInputExcl: addCommas(investmentsExcl),
         totalInput: addCommas(getInvestmentTotals(investment.accountName, true).investments),
       })
+    }
   }
   return summary
 }
