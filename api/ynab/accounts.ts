@@ -84,8 +84,8 @@ export const getInvestmentTotals = (name: string, allTotals = false) => {
   return totals
 }
 
-export const getROI = (name: string) => {
-  const { investments, gains } = getInvestmentTotals(name)
+export const getROI = (name: string, allTotals = false) => {
+  const { investments, gains } = getInvestmentTotals(name, allTotals)
   return ((gains / investments) * 100).toFixed(1) + '%'
 }
 
@@ -114,8 +114,9 @@ interface InvestmentSummary {
   name: string
   balanceExcl: string
   balance: string
-  IRR: string
+  IRRExcl: string
   ROI: string
+  ROIExcl: string
   totalInputExcl: string
   totalInput: string
   fees?: number
@@ -132,12 +133,13 @@ export const getInvestmentsSummary = (): InvestmentSummary[] => {
       const { investments, gains } = getInvestmentTotals(investment.accountName, true)
       summary.push({
         name: investment.accountName,
-        balanceExcl: addCommas(Math.ceil(investmentsExcl) + Math.ceil(gainsExcl)),
-        balance: addCommas(Math.ceil(investments) + Math.ceil(gains)),
-        ROI: getROI(investment.accountName),
-        IRR: getIRR(investment.accountName),
         totalInputExcl: addCommas(investmentsExcl),
         totalInput: addCommas(getInvestmentTotals(investment.accountName, true).investments),
+        balanceExcl: addCommas(Math.ceil(investmentsExcl) + Math.ceil(gainsExcl)),
+        balance: addCommas(Math.ceil(investments) + Math.ceil(gains)),
+        ROIExcl: getROI(investment.accountName),
+        ROI: getROI(investment.accountName, true),
+        IRRExcl: getIRR(investment.accountName),
       })
     }
   }
